@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class player_movement : MonoBehaviour
 {
+    cameralogic_reboot fpcam;
+
     Vector3 movement_x;
     Vector3 movement_y;
     Vector3 jump;
@@ -21,6 +23,7 @@ public class player_movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        fpcam = GameObject.Find("Main Camera").GetComponent<cameralogic_reboot>();
         m_animator = GetComponent<Animator>();
         m_charactercontroller = GetComponent<CharacterController>();
     }
@@ -51,6 +54,10 @@ public class player_movement : MonoBehaviour
         jump.y -= m_gravity * Time.deltaTime;
         movement_x = transform.right * horizontal_x * m_speed * Time.deltaTime;
         movement_y = transform.forward * vertical_y * m_speed * Time.deltaTime;
+        if(Mathf.Abs(horizontal_x)>0.1f || Mathf.Abs(vertical_y)>0.1f )
+        {
+            transform.forward = fpcam.getforwardvector();
+        }
         if(m_charactercontroller)
         {
             m_charactercontroller.Move(movement_x + movement_y + jump);

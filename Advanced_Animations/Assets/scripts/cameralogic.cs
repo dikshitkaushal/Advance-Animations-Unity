@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class camera_logic : MonoBehaviour
+public class cameralogic : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
