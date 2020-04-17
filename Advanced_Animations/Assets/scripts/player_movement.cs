@@ -67,4 +67,13 @@ public class player_movement : MonoBehaviour
             jump.y = 0;
         }
     }
+    private void OnAnimatorIK(int layerIndex)
+    {
+        if(m_animator)
+        {
+            m_animator.SetBoneLocalRotation(HumanBodyBones.Neck, Quaternion.Euler(fpcam.getrotation(), 0, 0));
+            m_animator.SetBoneLocalRotation(HumanBodyBones.RightShoulder, Quaternion.Euler(fpcam.getrotation(), 0, 0));
+            m_animator.SetBoneLocalRotation(HumanBodyBones.LeftShoulder, Quaternion.Euler(fpcam.getrotation(), 0, 0));
+        }
+    }
 }

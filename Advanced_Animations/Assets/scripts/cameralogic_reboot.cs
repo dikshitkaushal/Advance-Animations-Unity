@@ -22,7 +22,7 @@ public class cameralogic_reboot : MonoBehaviour
     void Update()
     {
         cameratarget = player.position;
-        cameratarget.y += 1.7f;
+        cameratarget.y += 2f;
         m_mouse_y += Input.GetAxis("Mouse X");
         m_mouse_x -= Input.GetAxis("Mouse Y");
 
@@ -33,7 +33,7 @@ public class cameralogic_reboot : MonoBehaviour
     private void LateUpdate()
     {
         Quaternion rot = Quaternion.Euler(m_mouse_x, m_mouse_y, 0);
-        cameraoffset = new Vector3(0, 0, -1.49f);
+        cameraoffset = new Vector3(0, 0, -2.49f);
 
         transform.position = cameratarget + rot * cameraoffset;
         transform.LookAt(cameratarget);
@@ -43,4 +43,12 @@ public class cameralogic_reboot : MonoBehaviour
         Quaternion rotx = Quaternion.Euler(0, m_mouse_y, 0);
         return rotx * Vector3.forward;
     }
+    public float getrotation()
+    {
+        return m_mouse_x;
+    }
+   /* public float getrotationy()
+    {
+        return m_mouse_y;
+    }*/
 }
