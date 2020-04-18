@@ -17,6 +17,7 @@ public class player_movement : MonoBehaviour
     float m_speed = 2f;
 
     bool isjumping = false;
+    bool crouching = false;
 
     CharacterController m_charactercontroller;
     Animator m_animator;
@@ -31,6 +32,17 @@ public class player_movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.C)&&!isjumping)
+        {
+            crouching = !crouching;
+            m_animator.SetBool("iscrouching", crouching);
+        }
+        if(crouching)
+        {
+            horizontal_x = 0;
+            vertical_y = 0;
+            return;
+        }
         horizontal_x = Input.GetAxis("Horizontal");
         vertical_y = Input.GetAxis("Vertical");
 
