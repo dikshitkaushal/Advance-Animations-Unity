@@ -93,12 +93,12 @@ public class player_movement : MonoBehaviour
             m_animator.SetBoneLocalRotation(HumanBodyBones.RightShoulder, Quaternion.Euler(fpcam.getrotation(), 0, 0));
             m_animator.SetBoneLocalRotation(HumanBodyBones.LeftShoulder, Quaternion.Euler(fpcam.getrotation(), 0, 0));
         }
-        if (m_animator && gun.shootingteller())
+       /* if (m_animator && gun.shootingteller())
         {
             m_animator.SetBoneLocalRotation(HumanBodyBones.Neck, Quaternion.Euler(0,fpcam.getrotationy(), 0));
             m_animator.SetBoneLocalRotation(HumanBodyBones.RightShoulder, Quaternion.Euler(0, fpcam.getrotationy(), 0));
             m_animator.SetBoneLocalRotation(HumanBodyBones.LeftShoulder, Quaternion.Euler(0, fpcam.getrotationy(), 0));
-        }
+        }*/
         if (m_animator && leftarmpos)
         {
             if (!gun.reloadingteller())

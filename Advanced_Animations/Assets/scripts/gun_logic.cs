@@ -29,7 +29,7 @@ public class gun_logic : MonoBehaviour
     bool isreloading = false;
     Animator m_animator;
     private bool isshooting=false;
-
+   
 
 
     // Start is called before the first frame update
@@ -50,6 +50,7 @@ public class gun_logic : MonoBehaviour
         {
             m_currentcooldown -= Time.deltaTime;
         }
+       
         if(Input.GetButton("Fire1") && m_currentcooldown<=0 && !isreloading)
         {
             if (m_currentbullet > 0)

@@ -12,6 +12,12 @@ public class cameralogic_reboot : MonoBehaviour
     float m_mouse_y;
     public float lowerbound = -20f;
     public float upperbound = 20f;
+    bool isaiming = false;
+    float aimposx = 0.65f;
+    float aimposy = 1.55f;
+    float aimposz = -0.7f;
+    float m_aimrotationy;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,18 +31,41 @@ public class cameralogic_reboot : MonoBehaviour
         cameratarget.y += 2f;
         m_mouse_y += Input.GetAxis("Mouse X");
         m_mouse_x -= Input.GetAxis("Mouse Y");
+        if (Input.GetButtonDown("Fire3"))
+        {
+            isaiming = !isaiming;
+            if (isaiming)
+            {
+                m_aimrotationy = m_mouse_y;
+                player.transform.rotation = Quaternion.Euler(0, m_aimrotationy, 0);
+            }
+            else
+            {
+                m_mouse_y = m_aimrotationy;
+            }
+        }
 
-        
 
         m_mouse_x = Mathf.Clamp(m_mouse_x, lowerbound, upperbound);
     }
     private void LateUpdate()
     {
-        Quaternion rot = Quaternion.Euler(m_mouse_x, m_mouse_y, 0);
-        cameraoffset = new Vector3(0, 0, -2.49f);
+        if (isaiming)
+        {
+            Quaternion rot = Quaternion.Euler(m_mouse_x, m_mouse_y, 0);
+            cameraoffset = new Vector3(0, 0, -2.49f);
 
-        transform.position = cameratarget + rot * cameraoffset;
-        transform.LookAt(cameratarget);
+            transform.position = cameratarget + rot * cameraoffset;
+            transform.LookAt(cameratarget);
+        }
+        else
+        {
+            cameratarget = player.transform.position;
+            Vector3 cameraoffset = new Vector3(aimposx, aimposy, aimposz);
+            Quaternion camerarot = player.transform.rotation;
+            transform.position = cameratarget + camerarot * cameraoffset;
+            transform.rotation = Quaternion.Euler(0, m_aimrotationy, 0);
+        }
     }
     public Vector3 getforwardvector()
     {
