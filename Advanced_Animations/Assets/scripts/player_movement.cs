@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class player_movement : MonoBehaviour
 {
+    [SerializeField] Transform leftarmpos;
+    [SerializeField] Transform leftfoot;
+    [SerializeField] Transform rightfoot;
+
     cameralogic_reboot fpcam;
+    gun_logic gun;
 
     Vector3 movement_x;
     Vector3 movement_y;
@@ -24,6 +29,7 @@ public class player_movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gun = GetComponentInChildren<gun_logic>();
         fpcam = GameObject.Find("Main Camera").GetComponent<cameralogic_reboot>();
         m_animator = GetComponent<Animator>();
         m_charactercontroller = GetComponent<CharacterController>();
@@ -86,6 +92,53 @@ public class player_movement : MonoBehaviour
             m_animator.SetBoneLocalRotation(HumanBodyBones.Neck, Quaternion.Euler(fpcam.getrotation(), 0, 0));
             m_animator.SetBoneLocalRotation(HumanBodyBones.RightShoulder, Quaternion.Euler(fpcam.getrotation(), 0, 0));
             m_animator.SetBoneLocalRotation(HumanBodyBones.LeftShoulder, Quaternion.Euler(fpcam.getrotation(), 0, 0));
+        }
+        if (m_animator && gun.shootingteller())
+        {
+            m_animator.SetBoneLocalRotation(HumanBodyBones.Neck, Quaternion.Euler(0,fpcam.getrotationy(), 0));
+            m_animator.SetBoneLocalRotation(HumanBodyBones.RightShoulder, Quaternion.Euler(0, fpcam.getrotationy(), 0));
+            m_animator.SetBoneLocalRotation(HumanBodyBones.LeftShoulder, Quaternion.Euler(0, fpcam.getrotationy(), 0));
+        }
+        if (m_animator && leftarmpos)
+        {
+            if (!gun.reloadingteller())
+            {
+                m_animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+                m_animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
+                m_animator.SetIKPosition(AvatarIKGoal.LeftHand, leftarmpos.position);
+                m_animator.SetIKRotation(AvatarIKGoal.LeftHand, leftarmpos.rotation);
+            }
+            else
+            {
+                m_animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
+                m_animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
+            }
+
+        }
+        if (leftfoot)
+        {
+            updatefoot(AvatarIKGoal.LeftFoot, leftfoot);
+        }
+        if (rightfoot)
+        {
+            updatefoot(AvatarIKGoal.RightFoot, rightfoot);
+        }
+    }
+    void updatefoot(AvatarIKGoal avatargoal,Transform foottransform)
+    {
+        Vector3 targetpos = foottransform.position;
+        targetpos.y += 0.5f;
+        Ray ray = new Ray(targetpos, Vector3.down);
+        RaycastHit hit;
+        LayerMask obstaclemask = LayerMask.GetMask("Obstacle");
+        if(Physics.Raycast(ray,out hit,1.0f,obstaclemask))
+        {
+            Vector3 hitpos = hit.point;
+            hitpos.y += 0.15f;
+            m_animator.SetIKPositionWeight(avatargoal, 1);
+            m_animator.SetIKRotationWeight(avatargoal, 1);
+            m_animator.SetIKPosition(avatargoal, hitpos);
+            m_animator.SetIKRotation(avatargoal, foottransform.rotation);
         }
     }
 }

@@ -47,8 +47,8 @@ public class cameralogic_reboot : MonoBehaviour
     {
         return m_mouse_x;
     }
-   /* public float getrotationy()
+    public float getrotationy()
     {
         return m_mouse_y;
-    }*/
+    }
 }
